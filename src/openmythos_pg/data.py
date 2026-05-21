@@ -4,6 +4,8 @@ from pathlib import Path
 import numpy as np
 import torch
 
+TOKEN_DTYPE = np.uint32  # llm-jp vocab ~100k exceeds uint16
+
 
 def tokenize_corpus(
     out_dir: Path | str,
@@ -28,7 +30,6 @@ def tokenize_corpus(
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_name, use_fast=True)
     vocab_size = tokenizer.vocab_size
     print(f"[data] vocab_size = {vocab_size}")
-    assert vocab_size < 65536, f"vocab too large for uint16: {vocab_size}"
 
     print(f"[data] loading dataset: {dataset_name}/{dataset_config}")
     ds = load_dataset(dataset_name, dataset_config, split="train")
@@ -49,7 +50,7 @@ def tokenize_corpus(
             batch = ds[batch_start : batch_start + batch_size]
             encs = tokenizer(batch["text"], add_special_tokens=False)["input_ids"]
             for ids in encs:
-                arr = np.array(ids + [eos_id], dtype=np.uint16)
+                arr = np.array(ids + [eos_id], dtype=TOKEN_DTYPE)
                 if rng.random() < val_ratio:
                     arr.tofile(fval)
                     val_count += len(arr)
@@ -71,10 +72,11 @@ def tokenize_corpus(
 
 
 def load_memmap(path: Path | str) -> np.memmap:
-    """Load a tokens.bin as uint16 memmap. Length is inferred from file size."""
+    """Load a tokens.bin as uint32 memmap. Length is inferred from file size."""
     path = Path(path)
-    size = path.stat().st_size // 2  # uint16 = 2 bytes
-    return np.memmap(path, dtype=np.uint16, mode="r", shape=(size,))
+    itemsize = np.dtype(TOKEN_DTYPE).itemsize
+    size = path.stat().st_size // itemsize
+    return np.memmap(path, dtype=TOKEN_DTYPE, mode="r", shape=(size,))
 
 
 def sample_batch(
