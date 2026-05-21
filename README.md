@@ -1,6 +1,6 @@
 # openmythos-pg
 
-Windows + RTX 3070 Laptop (8GB) / Python 3.11 / CUDA 12.1 想定。
+Windows + RTX 3070 Laptop (8GB) / Python 3.11 / CUDA 12.8 想定。
 
 ## uv
 
@@ -15,7 +15,11 @@ uv sync
 uv run python -c "import torch; print(torch.__version__, torch.cuda.is_available())"
 ```
 
-`cuda: True` になること。
+`cuda: True` になること。`+cpu` なら:
+
+```powershell
+uv pip install "torch==2.11.0" --index https://download.pytorch.org/whl/cu128 --force-reinstall
+```
 
 ## Docker (uv が詰まったら)
 
