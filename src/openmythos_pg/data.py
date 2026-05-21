@@ -10,7 +10,7 @@ TOKEN_DTYPE = np.uint32  # llm-jp vocab ~100k exceeds uint16
 def tokenize_corpus(
     out_dir: Path | str,
     tokenizer_name: str = "llm-jp/llm-jp-3-1.8b",
-    dataset_name: str = "wikipedia",
+    dataset_name: str = "wikimedia/wikipedia",
     dataset_config: str = "20231101.ja",
     val_ratio: float = 0.005,
     seed: int = 42,

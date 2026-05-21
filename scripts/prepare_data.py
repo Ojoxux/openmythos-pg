@@ -16,7 +16,7 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--out-dir", default=str(ROOT / "outputs" / "data"))
     p.add_argument("--tokenizer", default="llm-jp/llm-jp-3-1.8b")
-    p.add_argument("--dataset", default="wikipedia")
+    p.add_argument("--dataset", default="wikimedia/wikipedia")
     p.add_argument("--dataset-config", default="20231101.ja")
     p.add_argument("--val-ratio", type=float, default=0.005)
     args = p.parse_args()
