@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+
+# uv
+.uv-cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Project outputs (track only .gitkeep)
+outputs/*
+!outputs/.gitkeep
+
+# HF cache (huge)
+.cache/
+hf_cache/
+
+# Internal design/plan docs (kept local, not pushed to public repo)
+docs/superpowers/
+
+# Misc
+*.log
